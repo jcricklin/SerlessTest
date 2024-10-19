@@ -1,33 +1,22 @@
 # Optimisation des modèles : 
-import optuna
-from optuna.integration import PyTorchLightningPruningCallback
-from optuna.visualization import(
-    plot_optimization_history,
-    plot_param_importances,
-    plot_parallel_coordinate,
-    plot_slice,
-    plot_contour
-)
-import xgboost 
-from window_ops.rolling import rolling_mean, rolling_max, rolling_min, rolling_cv
-import pandas as pd
-import numpy as np
-from mlforecast import MLForecast  
-from mlforecast.lag_transforms import ExpandingMean, RollingMean, SeasonalRollingMean
 import time
 from datetime import datetime
 
-from utils import add_ds_unique_id
-from utils import split_df
-from utils import control_timeId_Matching
-from utils import root_mean_square_error
-from utils import custom_train_val_split
-from utils import sauvtoGCS
-
+import numpy as np
 import optuna
+import xgboost
+from mlforecast import MLForecast
 from optuna.pruners import BasePruner
 from optuna.trial._state import TrialState
+from window_ops.rolling import rolling_max, rolling_mean, rolling_min
 
+from utils import (
+    add_ds_unique_id,
+    control_timeId_Matching,
+    root_mean_square_error,
+    sauvtoGCS,
+    split_df,
+)
 
 # from darts import TimeSeries
 # from darts.dataprocessing.pipeline import Pipeline
