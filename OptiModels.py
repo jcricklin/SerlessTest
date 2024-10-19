@@ -28,9 +28,6 @@ import optuna
 from optuna.pruners import BasePruner
 from optuna.trial._state import TrialState
 
-from neuralforecast import NeuralForecast
-from neuralforecast.losses.pytorch import MAE, RMSE, DistributionLoss
-from neuralforecast.models import TFT  
 
 # from darts import TimeSeries
 # from darts.dataprocessing.pipeline import Pipeline

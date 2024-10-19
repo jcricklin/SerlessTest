@@ -3,7 +3,7 @@ import gc
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import tqdm
+from tqdm import tqdm
 
 
 from pytorch_lightning import Trainer
@@ -432,7 +432,7 @@ def save_csv_to_gcs(destination_blob_name, dataframe):
 
 
 #Dans cette version on fait un essai plus proche des besoins de colab
-def main_training_TFTModelProduitII(nb_epoch, num_id,df_final_reduced) :
+def main_training_TFTModelProduitII(nb_epoch, num_id,df_final_test_singleProduct, df_final_train_singleProduct, df_final_reduced_singleProduct) :
   n_days =90
   current_date = datetime.now()
   DATE_UPDATE_optuna = current_date.strftime('%d%m%Y')

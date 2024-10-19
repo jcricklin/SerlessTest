@@ -10,7 +10,7 @@ from utils import create_features
 from utils import load_registered_mlforecast
 from utils import split_df 
 from utils import add_ds_unique_id
-from OptiModels import create_and_use_optuna
+from OptiModels import create_and_use_optuna_XGBoost
 import FunctionWineChargeUniqueTFT
 import TFTModelErrorExplanation
 import shap
@@ -129,16 +129,19 @@ def getModel():
 #Function to save the result obtained using a one to one tft 
 @app.route('/getCausalsExplanations/TFT', methods=['POST','GET'])
 def SaveModelandResultTFT() : 
-    nb_epoch = 20
     n_days = 90 
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./optunasavedoncloud-715a0f78dedf.json"
     os.path.isfile("./optunasavedoncloud-715a0f78dedf.json")
     id_produit = request.json['ID_PRODUIT']
+    nb_epoch = request.json['NB_EPOCH']
     df_final_reduced = FunctionWineChargeUniqueTFT.ChargeDataBase_(id_produit)
     df_final_train_singleProduct, df_final_test_singleProduct, df_final_reduced_singleProduct = FunctionWineChargeUniqueTFT.select_product(id_produit, df_final_reduced,n_days)
-    TFTModelErrorExplanation.main_training_TFTModelProduitII(nb_epoch, id_produit,df_final_reduced)
-    
-
+    current_date = datetime.now()
+    DATE_UPDATE_optuna = current_date.strftime('%d%m%Y')
+    PIPELINE, train_transformed, covariates_transformed, create_covariates, train_darts, test_darts, total_darts = TFTModelErrorExplanation.PrepareDataForDarts(df_final_test_singleProduct, df_final_train_singleProduct, df_final_reduced_singleProduct)
+    tft_produit_result = TFTModelErrorExplanation.function_result_final(nb_epoch, id_produit, df_final_test_singleProduct, df_final_train_singleProduct, df_final_reduced_singleProduct)
+    study_name_dateAujoudhui = "ErrorProduit_detail" + f"{id_produit}" +f"_{DATE_UPDATE_optuna}"
+    TFTModelErrorExplanation.save_csv_to_gcs(study_name_dateAujoudhui, tft_produit_result)
     if not id_produit:
         return jsonify({"error": "Please provide a product ID"}), 400
         
