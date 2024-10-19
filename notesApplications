@@ -1,0 +1,12 @@
+Ce que nous allons faire ici : 
+
+
+1) Utiliser les bulcket de google cloud : 
+    - On stock l'ensemble des données sur les quels nous voulons faire le test
+    - Pour l'ensemble de modéle on utilise optuna : 
+        1) On sauvgardera les études des hyperparamêtres
+        2) On verra si on arrive à extraires des informations sur l'utilisation des produits
+    - On stock les prévisions des modèles 
+    - On conserve les métriques
+    - On conserve les features les plus important donné par optuna
+
